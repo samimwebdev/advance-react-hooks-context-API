@@ -1,19 +1,19 @@
-import React from 'react'
+import React, { useContext } from 'react'
 
 import styles from './Card.module.css'
+import { CounterContext } from './Counter.context'
 
-class CardNum extends React.Component {
-  pickedNumber = evt => {
+const CardNum = props => {
+  const countContext = useContext(CounterContext)
+  const pickedNumber = evt => {
     //this.props.handlePicked
-    this.props.handlePicked(+evt.target.textContent)
+    countContext.handlePicked(+evt.target.textContent)
   }
-  render() {
-    return (
-      <div onClick={this.pickedNumber} className={styles.card}>
-        {this.props.number}
-      </div>
-    )
-  }
-}
 
-export default CardNum
+  return (
+    <div onClick={pickedNumber} className={styles.card}>
+      {props.number}
+    </div>
+  )
+}
+export default React.memo(CardNum)

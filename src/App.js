@@ -11,66 +11,46 @@
 //style inline, html, local scoped style
 
 //synthetic event
-import React from 'react'
+import React, { useContext } from 'react'
 
 import CardNum from './CardNum'
 import OddOrEven from './OddOrEven'
+import { CounterContext } from './Counter.context'
 
-class App extends React.Component {
-  state = {
-    count: 0,
-    randomValues: [30, 33, 37, 42]
-  }
+const randVal = [30, 33, 37, 42]
 
-  handleIncrement = evt => {
-    // this.setState({
-    //   count: this.state.count + 1
-    // })
-    this.setState(prevState => {
-      return {
-        count: prevState.count + 1
-      }
-    })
-  }
+//controller -How state should be updated
 
-  handleDecrement = evt => {
-    this.setState(prevState => ({ count: prevState.count - 1 }))
-  }
+const App = () => {
+  const { count, dispatch } = useContext(CounterContext)
 
-  handleReset = () => {
-    this.setState({
-      count: 0
-    })
-  }
+  // const [count, setCount] = React.useState({ value: 0 })
+  // const [randVal, setRandVal] = React.useState([30, 33, 37, 42])
 
-  handlePicked = num => {
-    this.setState({
-      pickedNum: num
-    })
-  }
+  // const randVal = React.useMemo(() => {
+  //   return [30, 33, 37, 42]
+  // }, [])
 
-  render() {
-    return (
-      <div className='App'>
-        <p>{this.state.count}</p>
-        <button onClick={this.handleIncrement}>Increment</button>
-        <button onClick={this.handleDecrement}>Decrement</button>
-        <button onClick={this.handleReset}>Reset</button>
-        <OddOrEven number={this.state.pickedNum} />
+  // const randomVal = React.useMemo(() => {
+  //   return { greet: 'Hello' }
+  // }, [])
 
-        <br />
-        {this.state.randomValues.map((number, index) => {
-          return (
-            <CardNum
-              number={number}
-              key={index}
-              handlePicked={this.handlePicked}
-            />
-          )
-        })}
-      </div>
-    )
-  }
+  return (
+    <div className='App'>
+      <p>{count.value}</p>
+      <button onClick={() => dispatch({ type: 'INCREMENT', payload: 2 })}>
+        Increment
+      </button>
+      <button onClick={() => dispatch({ type: 'DECREMENT' })}>Decrement</button>
+      <button onClick={() => dispatch({ type: 'RESET' })}>Reset</button>
+      <OddOrEven />
+
+      <br />
+      {randVal.map((number, index) => {
+        return <CardNum number={number} key={index} />
+      })}
+    </div>
+  )
 }
 
 export default App
